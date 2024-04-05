@@ -165,6 +165,10 @@ function App() {
             getPartList();
             return;
 
+          case "removeOrder":
+            getOrdersDetailsList(state.token);
+            return;
+
           case "addParts":
             getPartList();
             return;
@@ -366,6 +370,17 @@ function App() {
       action: "addOrder",
     });
   };
+  const removeOrder = (orderID) => {
+    setUrlRequest({
+      url: "/orders/" + orderID,
+      request: {
+        method: "DELETE",
+        mode: "cors",
+        headers: { "Content-type": "application/json", token: state.token },
+      },
+      action: "removeOrder",
+    });
+  };
 
   const getOrdersDetailsList = (token) => {
     let temptoken = state.token;
@@ -440,6 +455,7 @@ function App() {
           element={
             <OrdersDetails
               orders={state.orders}
+              removeOrder={removeOrder}
               errorMsg={state.error}
               setError={setError}
             />

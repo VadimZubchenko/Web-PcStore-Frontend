@@ -1,23 +1,58 @@
 import { useState } from "react";
+import RemoveOrderRow from "./RemoveOrderRow";
+import OrderRow from "./OrderRow";
 
 const OrdersDetails = (props) => {
+  //state with the parts of order selected by user from the table
   const [state, setState] = useState([]);
 
+  const [mode, setMode] = useState({
+    removeIndex: -1,
+  });
+
+  const changeToRemoveMode = (index) => {
+    setMode({
+      removeIndex: index,
+    });
+  };
+  const cancel = () => {
+    setMode({
+      removeIndex: -1,
+    });
+  };
+
+  const removeOrder = (orderID) => {
+    props.removeOrder(orderID);
+    cancel();
+  };
+
+  const selectedRow = (order) => {
+    setState(order.orderDetails);
+  };
+
+  //array of all orders with included parts inside
   let orders = props.orders.length
-    ? props.orders.map((order) => {
+    ? props.orders.map((order, index) => {
+        if (mode.removeIndex === index) {
+          return (
+            <RemoveOrderRow
+              key={order.orderID}
+              order={order}
+              removeOrder={removeOrder}
+              cancel={cancel}
+            />
+          );
+        }
+
         return (
-          <tr
-            className="clickable-row"
-            //getting parts of order with certain orderID
-            onClick={() => setState(order.orderDetails)}
+          <OrderRow
             key={order.orderID}
-          >
-            <td>{order.orderID}</td>
-            <td>{order.customerName}</td>
-            <td>{order.totalPrice}</td>
-            <td>{order.orderDate}</td>
-            <td>{order.staffName}</td>
-          </tr>
+            order={order}
+            index={index} // index of the row has been taken as a second argument of map-function from customer Array list
+            mode={mode}
+            selectedRow={selectedRow}
+            changeToRemoveMode={changeToRemoveMode}
+          />
         );
       })
     : null;
@@ -35,7 +70,7 @@ const OrdersDetails = (props) => {
       })
     : null;
   return (
-    <div className="row">
+    <div className="row mx-auto">
       <div className="col-6 mx-auto">
         <h2 className="text-center mt-4">Orders</h2>
         <div
@@ -50,6 +85,7 @@ const OrdersDetails = (props) => {
                 <th>Total price</th>
                 <th>Date</th>
                 <th>Staff</th>
+                <th>Remove</th>
               </tr>
             </thead>
             <tbody>{orders}</tbody>
