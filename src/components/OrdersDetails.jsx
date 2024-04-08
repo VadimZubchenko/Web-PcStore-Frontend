@@ -1,23 +1,53 @@
 import { useState } from "react";
 import RemoveOrderRow from "./RemoveOrderRow";
 import OrderRow from "./OrderRow";
+import RemovePartRow from "./RemovePartRow";
+import PartRow from "./PartRow";
 
 const OrdersDetails = (props) => {
-  //state with the parts of order selected by user from the table
-  const [state, setState] = useState([]);
-
-  const [mode, setMode] = useState({
-    removeIndex: -1,
+  //state with array of the all parts of selected orderID in orders table
+  const [state, setState] = useState({
+    order: [],
+    parts: [],
   });
 
+  //state of row in the Orders table
+  const [modeOrderRow, setMode] = useState({
+    removeIndex: -1,
+  });
+  //state of raw in the Order Details table
+  const [modePartRow, setModePartRow] = useState({
+    removePartRowIndex: -1,
+    editPartRowIndex: -1,
+  });
+  //change row index in Orders table
   const changeToRemoveMode = (index) => {
     setMode({
       removeIndex: index,
     });
   };
+  //cancel index of selected row in Orders table
   const cancel = () => {
     setMode({
       removeIndex: -1,
+    });
+  };
+  //change the row index in Order Details table
+  const changePartsRowToRemoveMode = (index) => {
+    setModePartRow({
+      removePartRowIndex: index,
+    });
+  };
+  const changePartsRowToEditMode = (index) => {
+    setModePartRow({
+      editPartRowIndex: index,
+    });
+  };
+  //cancel index of select raw in Order Details table
+  const cancelPartRow = () => {
+    setModePartRow({
+      removePartRowIndex: -1,
+      editPartRowIndex: -1,
     });
   };
 
@@ -26,14 +56,36 @@ const OrdersDetails = (props) => {
     cancel();
   };
 
-  const selectedRow = (order) => {
-    setState(order.orderDetails);
+  const removePart = (order, partID) => {
+    let updatedPrice;
+    for (let i = 0; i < state.parts.length; i++) {
+      if (partID === state.parts[i].orderDetailID) {
+        updatedPrice = (
+          order.totalPrice -
+          state.parts[i].orderDetailQuantity * state.parts[i].orderDetailsPrice
+        ).toFixed(2); //round to two digits after decimal point
+        console.log("old price: ", order.totalPrice);
+        console.log("price: ", updatedPrice);
+        state.parts.splice(i, 1); // delete selected part from parts array
+      }
+    }
+    order.totalPrice = updatedPrice;
+    props.updateOrder(order);
+    console.log("order after: ", order);
+    cancelPartRow();
   };
 
-  //array of all orders with included parts inside
+  const selectedRow = (order) => {
+    setState({
+      order: order,
+      parts: order.orderDetails,
+    });
+  };
+
+  //array of all orders with included all parts inside of it
   let orders = props.orders.length
     ? props.orders.map((order, index) => {
-        if (mode.removeIndex === index) {
+        if (modeOrderRow.removeIndex === index) {
           return (
             <RemoveOrderRow
               key={order.orderID}
@@ -49,7 +101,6 @@ const OrdersDetails = (props) => {
             key={order.orderID}
             order={order}
             index={index} // index of the row has been taken as a second argument of map-function from customer Array list
-            mode={mode}
             selectedRow={selectedRow}
             changeToRemoveMode={changeToRemoveMode}
           />
@@ -57,15 +108,26 @@ const OrdersDetails = (props) => {
       })
     : null;
 
-  let orderDtl = state.length
-    ? state.map((part) => {
+  let orderDtl = state.parts.length
+    ? state.parts.map((part, index) => {
+        if (modePartRow.removePartRowIndex === index) {
+          return (
+            <RemovePartRow
+              key={part.orderDetailID}
+              part={part}
+              order={state.order} //selected orderID of Orders table
+              removePart={removePart}
+              cancelPartRow={cancelPartRow}
+            />
+          );
+        }
         return (
-          <tr key={part.orderDetailID}>
-            <td>{part.orderDetailID}</td>
-            <td>{part.partName}</td>
-            <td>{part.orderDetailQuantity}</td>
-            <td>{part.orderDetailsPrice}</td>
-          </tr>
+          <PartRow
+            key={part.orderDetailID}
+            part={part}
+            index={index}
+            changePartsRowToRemoveMode={changePartsRowToRemoveMode}
+          />
         );
       })
     : null;
@@ -106,6 +168,8 @@ const OrdersDetails = (props) => {
                 <th>Part Name</th>
                 <th>Quantity</th>
                 <th>Part Price</th>
+                <th>Remove</th>
+                <th>Edit</th>
               </tr>
             </thead>
             <tbody>{orderDtl}</tbody>

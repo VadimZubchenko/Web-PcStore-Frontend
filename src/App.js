@@ -46,7 +46,7 @@ function App() {
         //loads getPartList(token) after reloading the page
         // getPartList(state.token);
         // getCustomerList(state.token);
-        // getOrdersDetailsList(state.token);
+        // getOrdersList(state.token);
       }
     }
   }, []);
@@ -120,10 +120,10 @@ function App() {
               saveToStorage(tempState);
               return tempState;
             });
-            getOrdersDetailsList(state.token); //update customer every time when getParts
+            getOrdersList(state.token); //update customer every time when getParts
             return;
 
-          case "getOrdersDetails":
+          case "getOrdersList":
             let orders = await response.json();
             setState((state) => {
               let tempState = {
@@ -166,7 +166,11 @@ function App() {
             return;
 
           case "removeOrder":
-            getOrdersDetailsList(state.token);
+            getOrdersList(state.token);
+            return;
+
+          case "updateOrder":
+            getOrdersList(state.token);
             return;
 
           case "addParts":
@@ -382,7 +386,20 @@ function App() {
     });
   };
 
-  const getOrdersDetailsList = (token) => {
+  const updateOrder = (order) => {
+    setUrlRequest({
+      url: "/orders/" + order.orderID,
+      request: {
+        method: "PUT",
+        mode: "cors",
+        headers: { "Content-type": "application/json", token: state.token },
+        body: JSON.stringify(order),
+      },
+      action: "updateOrder",
+    });
+  };
+
+  const getOrdersList = (token) => {
     let temptoken = state.token;
     if (token) {
       temptoken = token;
@@ -394,7 +411,7 @@ function App() {
         mode: "cors",
         headers: { "Content-type": "application/json", token: temptoken },
       },
-      action: "getOrdersDetails",
+      action: "getOrdersList",
     });
   };
 
@@ -456,6 +473,7 @@ function App() {
             <OrdersDetails
               orders={state.orders}
               removeOrder={removeOrder}
+              updateOrder={updateOrder}
               errorMsg={state.error}
               setError={setError}
             />

@@ -84,7 +84,7 @@ const ListCustomerComponent = (props) => {
       <h2 className="text-center mt-4">Customers List</h2>
       <div
         className="ag-theme-alpine mx-auto mb-3 card-box scrollable-table"
-        style={{ height: 600, width: 800 }}
+        style={{ height: 600 }}
       >
         <table className="table table-striped">
           <thead className="th">
