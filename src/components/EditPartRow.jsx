@@ -7,6 +7,16 @@ const EditPartRow = (props) => {
     price: props.part.orderDetailsPrice,
   });
 
+  const onChange = (event) => {
+    setState((state) => {
+      return {
+        ...state,
+        [event.target.name]: event.target.value,
+        price: props.part.orderDetailsPrice * event.target.value,
+      };
+    });
+  };
+
   const editPartRow = (event) => {
     event.preventDefault();
     let partRow = {
@@ -16,19 +26,10 @@ const EditPartRow = (props) => {
     props.editPartRow(props.order, partRow);
   };
 
-  const onChange = (event) => {
-    setState((state) => {
-      return {
-        ...state,
-        [event.target.name]: event.target.value,
-      };
-    });
-  };
-
   return (
     <tr>
       <td className="text-center">{props.part.orderDetailID}</td>
-      <td className="text-center">{props.part.partName}</td>
+      <td className="text-center">{state.partName}</td>
       <td className="text-center">
         <input
           type="number"
@@ -40,7 +41,7 @@ const EditPartRow = (props) => {
           required
         />
       </td>
-      <td className="text-center">{props.part.orderDetailsPrice}</td>
+      <td className="text-center">{state.price}</td>
       <td>
         <button className="btn btn-outline-success" onClick={editPartRow}>
           Save
