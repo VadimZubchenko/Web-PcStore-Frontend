@@ -3,6 +3,7 @@ import RemoveOrderRow from "./RemoveOrderRow";
 import OrderRow from "./OrderRow";
 import RemovePartRow from "./RemovePartRow";
 import PartRow from "./PartRow";
+import EditPartRow from "./EditPartRow";
 
 const OrdersDetails = (props) => {
   //state with array of the all parts of selected orderID in orders table
@@ -26,6 +27,7 @@ const OrdersDetails = (props) => {
       removeIndex: index,
     });
   };
+
   //cancel index of selected row in Orders table
   const cancel = () => {
     setMode({
@@ -36,10 +38,12 @@ const OrdersDetails = (props) => {
   const changePartsRowToRemoveMode = (index) => {
     setModePartRow({
       removePartRowIndex: index,
+      editPartRowIndex: -1,
     });
   };
   const changePartsRowToEditMode = (index) => {
     setModePartRow({
+      removePartRowIndex: -1,
       editPartRowIndex: index,
     });
   };
@@ -55,6 +59,19 @@ const OrdersDetails = (props) => {
     props.removeOrder(orderID);
     cancel();
   };
+  const editPartRow = (order, partRow) => {
+    for (let i = 0; i < state.parts.length; i++) {
+      //find the updated part among others order parts
+      if (partRow.orderDetailID === state.parts[i].orderDetailID) {
+        console.log("Order id: ", order.orderID);
+        console.log("Part quantity : ", partRow.quantity);
+      }
+      // order.totalPrice = updatedPrice;
+      // props.updateOrder(order);
+      // console.log("updated quantityr: ");
+      cancelPartRow();
+    }
+  };
 
   const removePart = (order, partID) => {
     let updatedPrice;
@@ -64,8 +81,8 @@ const OrdersDetails = (props) => {
           order.totalPrice -
           state.parts[i].orderDetailQuantity * state.parts[i].orderDetailsPrice
         ).toFixed(2); //round to two digits after decimal point
-        console.log("old price: ", order.totalPrice);
-        console.log("price: ", updatedPrice);
+        console.log("the old price: ", order.totalPrice);
+        console.log("the new price: ", updatedPrice);
         state.parts.splice(i, 1); // delete selected part from parts array
       }
     }
@@ -121,12 +138,24 @@ const OrdersDetails = (props) => {
             />
           );
         }
+        if (modePartRow.editPartRowIndex === index) {
+          return (
+            <EditPartRow
+              key={part.orderDetailID}
+              part={part}
+              order={state.order} //selected orderID of Orders table
+              editPartRow={editPartRow}
+              cancelPartRow={cancelPartRow}
+            />
+          );
+        }
         return (
           <PartRow
             key={part.orderDetailID}
             part={part}
             index={index}
             changePartsRowToRemoveMode={changePartsRowToRemoveMode}
+            changePartsRowToEditMode={changePartsRowToEditMode}
           />
         );
       })

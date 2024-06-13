@@ -58,10 +58,7 @@ const OrderListComponent = observer((props) => {
       },
     ]);
     setSumma({
-      value: (
-        summa.value +
-        parts.selectedPart.partPrice * orderedQuantity.value
-      ).toFixed(2),
+      value: summa.value + parts.selectedPart.partPrice * orderedQuantity.value,
     });
   };
   const createOrder = () => {

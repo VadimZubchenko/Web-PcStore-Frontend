@@ -171,6 +171,7 @@ function App() {
 
           case "updateOrder":
             getOrdersList(state.token);
+            getPartList();
             return;
 
           case "addParts":
@@ -388,7 +389,7 @@ function App() {
 
   const updateOrder = (order) => {
     setUrlRequest({
-      url: "/orders/" + order.orderID,
+      url: "/orders",
       request: {
         method: "PUT",
         mode: "cors",
@@ -522,10 +523,7 @@ function App() {
         />
       </header>
       <div className="text-center">{messageArea}</div>
-      <div
-        className="container-fluid bd-gutter grey-background align-items-start card-box"
-        style={{ height: window.outerHeight - 80 }}
-      >
+      <div className="container-fluid bd-gutter grey-background align-items-start card-box">
         {tempRender}
       </div>
       <footer className="footer bd-footer py-2 py-md-3 mt-4 bg-black position-relative">

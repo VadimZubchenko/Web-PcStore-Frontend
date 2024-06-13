@@ -73,6 +73,7 @@ const AddParts = (props) => {
               className="form-control"
               onChange={onChange}
               value={state.stockQuantity}
+              min={1}
               required
             />
             <label htmlFor="partPrice" className="form-label mb-0 mt-3">
@@ -86,6 +87,7 @@ const AddParts = (props) => {
               className="form-control"
               onChange={onChange}
               value={state.partPrice}
+              min={0.1}
               required
             />
             <div className="d-grid">

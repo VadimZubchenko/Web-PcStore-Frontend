@@ -15,6 +15,14 @@ const PartRow = (props) => {
           Remove
         </button>
       </td>
+      <td>
+        <button
+          className="btn btn-outline-danger"
+          onClick={() => props.changePartsRowToEditMode(props.index)}
+        >
+          Edit
+        </button>
+      </td>
     </tr>
   );
 };
