@@ -60,25 +60,25 @@ const OrdersDetails = (props) => {
     cancel();
   };
   const editPartRow = (order, partRow) => {
+    let updatedPrice = 0;
+    console.log("Updated total price before: ", order.totalPrice);
     for (let i = 0; i < state.parts.length; i++) {
       //find the updated part among others order parts
       if (partRow.orderDetailID === state.parts[i].orderDetailID) {
-        console.log("Order id: ", order.orderID);
+        console.log("Order id: ", order);
         console.log("Part quantity : ", partRow.quantity);
         console.log("part price: ", partRow.price);
-        order.orderDetails.orderDetailQuantity = partRow.quantity;
-        order.orderDetails.orderDetailsPrice = partRow.price;
         state.parts[i].orderDetailQuantity = partRow.quantity;
         state.parts[i].orderDetailsPrice = partRow.price;
       }
-      let updatedPrice = (order.totalPrice +=
-        state.parts[i].orderDetailQuantity * state.parts[i].orderDetailsPrice); //round to two digits after decimal point
-      order.totalPrice = updatedPrice;
-      console.log("Order total price: ", order.totalPrice);
-      // props.updateOrder(order);
-      // console.log("updated quantityr: ");
-      cancelPartRow();
+
+      updatedPrice += state.parts[i].orderDetailsPrice;
     }
+    order.totalPrice = updatedPrice;
+    console.log("Order total price: ", order.totalPrice);
+    // TO DO
+    // props.updateOrder(order);
+    cancelPartRow();
   };
 
   const removePart = (order, partID) => {

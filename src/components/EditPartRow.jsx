@@ -5,6 +5,7 @@ const EditPartRow = (props) => {
     partName: props.part.partName,
     quantity: props.part.orderDetailQuantity,
     price: props.part.orderDetailsPrice,
+    pricePerItem: props.part.orderDetailsPrice / props.part.orderDetailQuantity,
   });
 
   const onChange = (event) => {
@@ -12,7 +13,7 @@ const EditPartRow = (props) => {
       return {
         ...state,
         [event.target.name]: event.target.value,
-        price: props.part.orderDetailsPrice * event.target.value,
+        price: state.pricePerItem * event.target.value,
       };
     });
   };
