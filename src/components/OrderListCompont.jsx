@@ -46,7 +46,7 @@ const OrderListComponent = observer((props) => {
       partName: parts.selectedPart.partName,
       partType: parts.selectedPart.partType,
       partQuantity: orderedQuantity.value,
-      partPrice: parts.selectedPart.partPrice,
+      partPrice: parts.selectedPart.partPrice * orderedQuantity.value,
     };
     setOrderedParts([...orderedParts, rowPart]);
     setPartDetail([
@@ -58,7 +58,8 @@ const OrderListComponent = observer((props) => {
       },
     ]);
     setSumma({
-      value: summa.value + parts.selectedPart.partPrice * orderedQuantity.value,
+      value: (summa.value +=
+        parts.selectedPart.partPrice * orderedQuantity.value),
     });
   };
   const createOrder = () => {

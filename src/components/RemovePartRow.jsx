@@ -6,7 +6,7 @@ const RemovePartRow = (props) => {
       <td>{props.part.orderDetailID}</td>
       <td>{props.part.partName}</td>
       <td>{props.part.orderDetailQuantity}</td>
-      <td>{props.part.orderDetailsPrice}</td>
+      <td>{props.part.orderDetailPrice}</td>
       <td>
         <button
           className="btn btn-outline-success"

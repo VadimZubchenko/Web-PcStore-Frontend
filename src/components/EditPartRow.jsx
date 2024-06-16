@@ -4,8 +4,8 @@ const EditPartRow = (props) => {
   const [state, setState] = useState({
     partName: props.part.partName,
     quantity: props.part.orderDetailQuantity,
-    price: props.part.orderDetailsPrice,
-    pricePerItem: props.part.orderDetailsPrice / props.part.orderDetailQuantity,
+    price: props.part.orderDetailPrice,
+    pricePerItem: props.part.orderDetailPrice / props.part.orderDetailQuantity,
   });
 
   const onChange = (event) => {

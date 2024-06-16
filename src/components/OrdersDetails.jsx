@@ -60,24 +60,22 @@ const OrdersDetails = (props) => {
     cancel();
   };
   const editPartRow = (order, partRow) => {
-    let updatedPrice = 0;
-    console.log("Updated total price before: ", order.totalPrice);
+    let updatedPrice = 0.0;
     for (let i = 0; i < state.parts.length; i++) {
       //find the updated part among others order parts
       if (partRow.orderDetailID === state.parts[i].orderDetailID) {
-        console.log("Order id: ", order);
+        console.log("Order: ", order);
         console.log("Part quantity : ", partRow.quantity);
         console.log("part price: ", partRow.price);
         state.parts[i].orderDetailQuantity = partRow.quantity;
-        state.parts[i].orderDetailsPrice = partRow.price;
+        state.parts[i].orderDetailPrice = partRow.price;
       }
-
-      updatedPrice += state.parts[i].orderDetailsPrice;
+      updatedPrice += state.parts[i].orderDetailPrice;
     }
     order.totalPrice = updatedPrice;
-    console.log("Order total price: ", order.totalPrice);
+    console.log("Order new : ", order);
     // TO DO
-    // props.updateOrder(order);
+    props.updateOrder(order);
     cancelPartRow();
   };
 
@@ -87,7 +85,7 @@ const OrdersDetails = (props) => {
       if (partID === state.parts[i].orderDetailID) {
         updatedPrice = (
           order.totalPrice -
-          state.parts[i].orderDetailQuantity * state.parts[i].orderDetailsPrice
+          state.parts[i].orderDetailQuantity * state.parts[i].orderDetailPrice
         ).toFixed(2); //round to two digits after decimal point
         console.log("the old price: ", order.totalPrice);
         console.log("the new price: ", updatedPrice);
