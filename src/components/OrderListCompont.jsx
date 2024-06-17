@@ -34,7 +34,6 @@ const OrderListComponent = observer((props) => {
   };
 
   const addPart = () => {
-    console.log("Selected part id: " + parts.selectedPart.partID);
     if (parts.selectedPart.partID == null || parts.selectedPart.partID === 0) {
       setMessage("Please start by selecting the part");
       return;
@@ -46,7 +45,9 @@ const OrderListComponent = observer((props) => {
       partName: parts.selectedPart.partName,
       partType: parts.selectedPart.partType,
       partQuantity: orderedQuantity.value,
-      partPrice: parts.selectedPart.partPrice * orderedQuantity.value,
+      partPrice: parseFloat(
+        (parts.selectedPart.partPrice * orderedQuantity.value).toFixed(2)
+      ),
     };
     setOrderedParts([...orderedParts, rowPart]);
     setPartDetail([
@@ -58,8 +59,11 @@ const OrderListComponent = observer((props) => {
       },
     ]);
     setSumma({
-      value: (summa.value +=
-        parts.selectedPart.partPrice * orderedQuantity.value),
+      //back to float number after toFixed(2) returned a string
+      value: parseFloat(
+        (summa.value +=
+          parts.selectedPart.partPrice * orderedQuantity.value).toFixed(2)
+      ),
     });
   };
   const createOrder = () => {
@@ -69,7 +73,6 @@ const OrderListComponent = observer((props) => {
       email: parts.newCustomer.email,
     };
     if (summa.value === 0) {
-      console.log("Order totalPrice: " + summa.value);
       setMessage("Please Add part into order list");
       return;
     }
@@ -79,7 +82,6 @@ const OrderListComponent = observer((props) => {
       parts.newCustomer.address === "" ||
       parts.newCustomer.email === ""
     ) {
-      console.log("Customer data: " + order.customer.length);
       setMessage("Please fill out the customer form");
 
       return;
@@ -92,12 +94,6 @@ const OrderListComponent = observer((props) => {
       orderedParts: [partDetails],
     });
     setMessage("The order has been DONE!");
-  };
-
-  const cancel = () => {
-    setSumma({ value: 0 });
-    setOrderedParts([]);
-    setQuantity({ value: 1 });
   };
 
   useEffect(() => {
@@ -124,6 +120,28 @@ const OrderListComponent = observer((props) => {
       </h4>
     );
   }
+  //rowID (not a partID) is in temporary Order table of selected parts
+  const remove = (rowID) => {
+    for (let i = 0; i < orderedParts.length; i++) {
+      if (rowID === orderedParts[i].ID) {
+        setSumma({
+          //back to float number after toFixed(2) returned a string
+          value: parseFloat(
+            (summa.value -= orderedParts[i].partPrice).toFixed(2)
+          ),
+        });
+        // delete selected part from parts array
+        orderedParts.splice(i, 1);
+      }
+    }
+    setQuantity({ value: 1 });
+  };
+
+  const cancel = () => {
+    setSumma({ value: 0 });
+    setOrderedParts([]);
+    setQuantity({ value: 1 });
+  };
 
   return (
     <div className="row">
@@ -186,6 +204,7 @@ const OrderListComponent = observer((props) => {
                 <th className="text-start">Type</th>
                 <th className="text-center">Quantity</th>
                 <th className="text-start">Price</th>
+                <th className="text-start text-center">Remove</th>
               </tr>
             </thead>
             <tbody>
@@ -197,6 +216,14 @@ const OrderListComponent = observer((props) => {
                       <td className="text-start">{part.partType}</td>
                       <td className="text-center">{part.partQuantity}</td>
                       <td className="text-start">{part.partPrice}</td>
+                      <td>
+                        <button
+                          className="btn btn-outline-danger"
+                          onClick={() => remove(part.ID)}
+                        >
+                          Remove
+                        </button>
+                      </td>
                     </tr>
                   ))
                 : null}
@@ -212,16 +239,6 @@ const OrderListComponent = observer((props) => {
             onClick={createOrder}
           >
             Do Order
-          </button>
-        </div>
-        <div className="col text-center">
-          <button
-            type="button"
-            className="btn btn-outline-secondary"
-            onClick={cancel}
-            style={{ marginLeft: "20px" }}
-          >
-            Cancel
           </button>
         </div>
       </div>

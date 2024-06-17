@@ -13,7 +13,7 @@ const EditPartRow = (props) => {
       return {
         ...state,
         [event.target.name]: event.target.value,
-        price: state.pricePerItem * event.target.value,
+        price: parseFloat((state.pricePerItem * event.target.value).toFixed(2)),
       };
     });
   };

@@ -64,7 +64,6 @@ const OrdersDetails = (props) => {
     for (let i = 0; i < state.parts.length; i++) {
       //find the updated part among others order parts
       if (partRow.orderDetailID === state.parts[i].orderDetailID) {
-        console.log("Order: ", order);
         console.log("Part quantity : ", partRow.quantity);
         console.log("part price: ", partRow.price);
         state.parts[i].orderDetailQuantity = partRow.quantity;
@@ -83,10 +82,13 @@ const OrdersDetails = (props) => {
     let updatedPrice;
     for (let i = 0; i < state.parts.length; i++) {
       if (partID === state.parts[i].orderDetailID) {
-        updatedPrice = (
-          order.totalPrice -
-          state.parts[i].orderDetailQuantity * state.parts[i].orderDetailPrice
-        ).toFixed(2); //round to two digits after decimal point
+        //back to float number after toFixed(2) returned a string
+        updatedPrice = parseFloat(
+          (
+            order.totalPrice -
+            state.parts[i].orderDetailQuantity * state.parts[i].orderDetailPrice
+          ).toFixed(2)
+        );
         console.log("the old price: ", order.totalPrice);
         console.log("the new price: ", updatedPrice);
         state.parts.splice(i, 1); // delete selected part from parts array
