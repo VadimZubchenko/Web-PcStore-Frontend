@@ -1,70 +1,129 @@
-# Getting Started with Create React App
+Here is the updated `README.md` for the project, incorporating the uploaded image:
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+---
 
-## Available Scripts
+# Easy Inventory Management
 
-In the project directory, you can run:
+![image](https://github.com/VadimZubchenko/WebApp-PcStore-Backend/assets/36922064/8ac9ffbe-dfb3-4fac-9448-ab67142491e7)
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+This project is designed to facilitate easy management of inventory for PC stores. It consists of a backend and a frontend, utilizing modern web technologies to provide a seamless user experience.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Technologies and Tools
 
-### `npm test`
+- **Spring Boot 2+**: A powerful framework for building Java applications quickly and efficiently.
+- **Spring Data JPA (Hibernate)**: A module for managing relational data in Java applications using the Java Persistence API.
+- **Spring Security**: A security framework for securing Java applications.
+- **Maven**: A build automation tool used primarily for Java projects.
+- **JDK**: Java Development Kit, necessary for developing Java applications.
+- **Embedded Tomcat 8.5+**: An embedded web server and Servlet container.
+- **MySQL Database**: A relational database management system.
+- **Node.js**: A JavaScript runtime for executing server-side code.
+- **React**: A JavaScript library for building user interfaces.
+- **Redux**: A state management library for JavaScript applications.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Repository Links
 
-### `npm run build`
+- **Backend Repository**: [WebApp-PcStore-Backend](https://github.com/VadimZubchenko/WebApp-PcStore-Backend.git)
+- **Frontend Repository**: [WebApp-PcStore-Frontend](https://github.com/VadimZubchenko/WebApp-PcStore-Frontend.git)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Prerequisites
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Before you begin, ensure you have the following installed on your system:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Java Development Kit (JDK) 8 or later
+- Maven 3.6.0 or later
+- MySQL Database
+- Node.js 12 or later
+- npm (Node Package Manager)
 
-### `npm run eject`
+## Getting Started
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Follow these instructions to set up and run the project on your local machine.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 1. Clone the Repositories
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+#### Backend
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```sh
+git clone https://github.com/VadimZubchenko/WebApp-PcStore-Backend.git
+cd WebApp-PcStore-Backend
+```
 
-## Learn More
+#### Frontend
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```sh
+git clone https://github.com/VadimZubchenko/WebApp-PcStore-Frontend.git
+cd WebApp-PcStore-Frontend
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 2. Configure the Database
 
-### Code Splitting
+Create a MySQL database and update the `application.properties` file in the backend repository with your database credentials.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/your_database_name
+spring.datasource.username=your_username
+spring.datasource.password=your_password
+spring.jpa.hibernate.ddl-auto=update
+```
 
-### Analyzing the Bundle Size
+### 3. Build and Run the Backend
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Navigate to the backend repository directory and use Maven to build and run the project.
 
-### Making a Progressive Web App
+```sh
+mvn clean install
+mvn spring-boot:run
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### 4. Build and Run the Frontend
 
-### Advanced Configuration
+Navigate to the frontend repository directory and install the dependencies. Then, start the frontend server.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```sh
+npm install
+npm start
+```
 
-### Deployment
+### 5. Access the Application
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Once both the backend and frontend are running, you can access the application at `http://localhost:3000`.
 
-### `npm run build` fails to minify
+## Project Structure
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Backend
+
+- **src/main/java**: Contains the source code of the backend application.
+- **src/main/resources**: Contains configuration files and static resources.
+- **pom.xml**: The Maven project descriptor file.
+
+### Frontend
+
+- **src/**: Contains the source code of the frontend application.
+- **public/**: Contains static assets.
+- **package.json**: The Node.js project descriptor file.
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request for any improvements or new features.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgements
+
+- [Spring Boot Documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/)
+- [Maven Documentation](https://maven.apache.org/guides/index.html)
+- [Hibernate Documentation](https://hibernate.org/orm/documentation/)
+- [Spring Security Documentation](https://spring.io/projects/spring-security)
+- [Node.js Documentation](https://nodejs.org/en/docs/)
+- [React Documentation](https://reactjs.org/docs/getting-started.html)
+- [Redux Documentation](https://redux.js.org/introduction/getting-started)
+
+---
+
+**Start managing your inventory efficiently with Easy Inventory Management!**
+
+---
