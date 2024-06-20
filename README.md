@@ -1,4 +1,4 @@
-Here is the updated `README.md` for the project, incorporating the uploaded image:
+
 ---
 *The project is under development...*
 ---
