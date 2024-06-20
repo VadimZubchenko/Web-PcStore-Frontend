@@ -59,6 +59,8 @@ cd WebApp-PcStore-Frontend
 
 ### 2. Configure the Database
 
+![image](https://github.com/VadimZubchenko/WebApp-PcStore-Frontend/assets/36922064/0dd4223d-5e87-40ae-851f-c049cd60b96f)
+
 Create a MySQL database and update the `application.properties` file in the backend repository with your database credentials.
 
 ```properties
