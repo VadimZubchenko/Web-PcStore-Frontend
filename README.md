@@ -14,7 +14,7 @@ The web application is a warehouse management tool for a computer parts store. T
 
 First of all, the one of the key objectives of this project is to help Jr. Full-Stack Web developers practically implement their skills and knowledge in the Spring Boot + React stack. It provides a clear and understandable picture of the process of creating modern Single Page Applications (SPAs).
 
-## User Roles and User Interface
+## User Roles and Provided Authorization
 
 * Sales Staff: Interface for creating customer orders from available parts and computer packages.
 * Warehouse Staff: Interface for managing inventory, including adding and removing products.
@@ -34,7 +34,7 @@ First of all, the one of the key objectives of this project is to help Jr. Full-
 * Most of the graphical user interface (GUI) is created.
 * About 90% of the functionality is implemented.
 * Database tables are set up and connection via Hibernate is established.
-* Application starts with a login page; staff can make authorization and log in with their credentials.
+* Application starts with a login page where user can make registration and log in with their credentials.
 * Sales page allows the saler to retrieve available computer parts from the database and create order lines.
 * Order page allows the saler to view and edit orders.
 * Inventory page allows the saler to add parts into the database.
