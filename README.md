@@ -10,9 +10,12 @@
 
 ## What is it about
 
-The web application is a warehouse management tool for a computer parts store. This would be ideal for the store's internal use to efficiently monitor sales, inventory, customer orders, and financial progress.
+The goal of the project was to create an inventory management tool for a small brick-and-mortar computer store. Created as a web application, it is designed for internal company use to support sales, inventory management, and financial progress remotely via the internet. Utilizing a modern tech stack, including Spring Boot, Spring Security, React, Node.js along with Bootstrap for responsive design and MySQL for robust data storage, this application ensures seamless operations and real-time data access. The application features secure authentication, dynamic data visualization, and intuitive user interfaces to enhance productivity and efficiency for remote employees.
 
-First of all, the one of the key objectives of this project is to help Jr. Full-Stack Web developers practically implement their skills and knowledge in the Spring Boot + React stack. It provides a clear and understandable picture of the process of creating modern Single Page Applications (SPAs).
+First of all, the one of the objective reasons of creating this project was to help Jr. Full-Stack Web developers practically implement their skills and knowledge in the Spring Boot + React stack. It provides a clear and understandable picture of the process of creating modern Single Page Applications (SPAs).
+
+As a Full Stack Developer, I designed the project with a flexible architecture to ensure scalability and extendability. This approach allows for seamless integration of new features and efficient handling of increased workloads, ensuring the application can grow alongside the company's needs. The architecture supports modular development, making it easier to maintain and upgrade various components without disrupting overall functionality.
+
 
 ## User Roles and Provided Authorization
 
