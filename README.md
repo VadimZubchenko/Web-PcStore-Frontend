@@ -10,7 +10,7 @@
 
 ## What is it about
 
-The web application is a warehouse management tool for a computer parts store. This would be good for store's internal use to monitor sales, inventory, customer orders, and financial progress.
+The web application is a warehouse management tool for a computer parts store. This would be ideal for the store's internal use to efficiently monitor sales, inventory, customer orders, and financial progress.
 
 First of all, the one of the key objectives of this project is to help Jr. Full-Stack Web developers practically implement their skills and knowledge in the Spring Boot + React stack. It provides a clear and understandable picture of the process of creating modern Single Page Applications (SPAs).
 
