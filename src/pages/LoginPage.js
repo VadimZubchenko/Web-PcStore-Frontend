@@ -1,48 +1,55 @@
-import { React } from "react";
-import { Container, Form, FormControl } from "react-bootstrap";
-import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
-import Row from "react-bootstrap/Row";
-import { useState, useEffect } from "react";
+import { React } from 'react'
+import { Container, Form, FormControl } from 'react-bootstrap'
+import Card from 'react-bootstrap/Card'
+import Button from 'react-bootstrap/Button'
+import Row from 'react-bootstrap/Row'
+import { useState, useEffect } from 'react'
+
+//Redux
+import { useDispatch } from 'react-redux'
+import { register, logAction } from '../actions/loginActions'
 
 // Controlled components (form handling)
 const LoginPage = (props) => {
+  // Map Dispatch to props
+  const dispatch = useDispatch()
+
   // state of LoginPage
   const [state, setState] = useState({
     isReg: false,
-    staffName: "",
-    login: "",
-    password: "",
-    confirmPassword: "",
-  });
+    staffName: '',
+    login: '',
+    password: '',
+    confirmPassword: '',
+  })
 
   //useEffect being intitiated if 'isReg' state is changed
-  useEffect(() => {}, [state.isReg]);
+  useEffect(() => {}, [state.isReg])
 
   //function which changes a type of form for login/reg
   const changeToReg = (event) => {
-    if (event.target.name === "Registration") {
-      props.setError("Registration form");
+    if (event.target.name === 'Registration') {
+      props.setError('Registration form')
       setState((state) => {
         return {
-          staffName: "",
-          login: "",
-          password: "",
-          confirmPassword: "",
+          staffName: '',
+          login: '',
+          password: '',
+          confirmPassword: '',
           isReg: true,
-        };
-      });
+        }
+      })
     }
-    if (event.target.name === "Authorization") {
-      props.setError("Authorization form");
+    if (event.target.name === 'Authorization') {
+      props.setError('Authorization form')
       setState((state) => {
         return {
           ...state,
           isReg: false,
-        };
-      });
+        }
+      })
     }
-  };
+  }
 
   //define method 'onChange' as a property, that is equal as an arrow function,
   //where 'event' is passed as a parameter
@@ -51,59 +58,61 @@ const LoginPage = (props) => {
       return {
         ...state,
         [event.target.name]: event.target.value,
-      };
-    });
-  };
+      }
+    })
+  }
 
   const onSubmit = (event) => {
-    event.preventDefault();
-    if (state.login === "" || state.password === "") {
-      props.setError("Please fill out the form below");
-      return;
+    event.preventDefault()
+    if (state.login === '' || state.password === '') {
+      props.setError('Please fill out the form below')
+      return
     }
     if (state.login.length < 4 || state.password.length < 8) {
       // the message will appear in messageArea of App's component by changig state's parameter 3setError=(error)
       props.setError(
-        "Login needs to be at least four and password eight characters long"
-      );
-      return;
+        'Login needs to be at least four and password eight characters long'
+      )
+      return
     }
 
     // create object 'user' from values of state
     let user = {
       login: state.login,
       password: state.password,
-    };
+    }
     let newUser = {
       staffName: state.staffName,
       login: state.login,
       password: state.password,
       confirmPassword: state.confirmPassword,
-    };
-    if (event.target.name === "Registration") {
-      props.register(newUser);
+    }
+    if (event.target.name === 'Registration') {
+      /* props.register(newUser) */
+      dispatch(register(newUser))
       //to clear reg. form from inputed data
       setState({
-        staffName: "",
-        login: "",
-        password: "",
-        confirmPassword: "",
-      });
-      console.log("before: " + state.staffName);
+        staffName: '',
+        login: '',
+        password: '',
+        confirmPassword: '',
+      })
+      console.log('before: ' + state.staffName)
 
-      console.log("after: " + state.staffName);
+      console.log('after: ' + state.staffName)
     } else {
-      props.login(user);
+      // Testing of Redux
+      dispatch(logAction(user))
     }
-  };
+  }
 
   //get the names shorter in return(), as the state.login and state.password to login and password.
-  const { staffName, login, password, confirmPassword } = state;
+  const { staffName, login, password, confirmPassword } = state
 
   return (
     <Card style={{ width: 450 }} className="d-flex card-box p-4 mt-5">
-      <h2>{state.isReg ? "Registration" : "Authorization"}</h2>
-      <div style={{ width: 400, backgroundColor: "light-grey" }}>
+      <h2>{state.isReg ? 'Registration' : 'Authorization'}</h2>
+      <div style={{ width: 400, backgroundColor: 'light-grey' }}>
         <Form className="d-flex flex-column">
           {state.isReg && (
             <label htmlFor="staffName" className="form-label mb-0 mt-3">
@@ -166,26 +175,26 @@ const LoginPage = (props) => {
         <Row className="d-flex justify-content-between mt-5">
           <div className="d-grid gap-4">
             <Button
-              variant={"outline-success"}
+              variant={'outline-success'}
               className="btn"
-              name={state.isReg ? "Registration" : "Login"}
+              name={state.isReg ? 'Registration' : 'Login'}
               onClick={onSubmit}
             >
-              {state.isReg ? "REGISTER IN" : "SIGN IN"}
+              {state.isReg ? 'REGISTER IN' : 'SIGN IN'}
             </Button>
             <Button
-              variant={"outline-primary"}
+              variant={'outline-primary'}
               className="btn"
-              name={state.isReg ? "Authorization" : "Registration"}
+              name={state.isReg ? 'Authorization' : 'Registration'}
               onClick={changeToReg}
             >
-              {state.isReg ? "Authorization" : "Registration"}
+              {state.isReg ? 'Authorization' : 'Registration'}
             </Button>
           </div>
         </Row>
       </div>
     </Card>
-  );
-};
+  )
+}
 
-export default LoginPage;
+export default LoginPage

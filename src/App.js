@@ -1,46 +1,49 @@
-import "./App.css";
-import { useState, useEffect } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import LoginPage from "./pages/LoginPage";
-import CustomerListComponent from "./components/CustomerListComponent";
-import ShopPage from "./pages/ShopPage";
-import FooterComponent from "./components/FooterComponent";
-import AddParts from "./components/AddParts";
-import OrdersDetails from "./components/OrdersDetails";
+import './App.css'
+import { useState, useEffect } from 'react'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import Navbar from './components/Navbar'
+import LoginPage from './pages/LoginPage'
+import CustomerListComponent from './components/CustomerListComponent'
+import ShopPage from './pages/ShopPage'
+import FooterComponent from './components/FooterComponent'
+import AddParts from './components/AddParts'
+import OrdersDetails from './components/OrdersDetails'
+import { useSelector } from 'react-redux'
+
 function App() {
-  // Create first state with staff parts, token and error for showing a message of processing
+  const appState = useSelector((state) => state)
+
+  // Create first state with staff, parts, token and error for showing a message of processing
   const [state, setState] = useState({
     list: [],
     customers: [],
     orders: [],
     isLogged: false,
-    token: "",
-    staff: "",
-    role: "",
+    token: '',
+    staff: '',
+    role: '',
     loading: false,
-    error: "",
-  });
+    error: '',
+  })
 
   // Create second state for changing URL and requests with differents cases as action (register, login, logout ...)
   const [urlRequest, setUrlRequest] = useState({
-    url: "",
+    url: '',
     request: {}, // {} includes object with http-request parameters method, mode, header, body
-    action: "",
-  });
+    action: '',
+  })
 
   //STORAGE FUNCTIOINS
 
-  //useEffect() runs only on the first render because an empty array ([]) as a second argument
+  // The first useEffect() runs only on the first render because an empty array ([]) as a second argument
   //without the second argument it runs on every render
   useEffect(() => {
-    // saving session on the web-browser gives opportunity reload page into same state
-    // without that it goes comeback to loginpage
-    // first passing here('true') will be just after case of action: "register" included setError's saveToStorage(tempState);
-    if (sessionStorage.getItem("state")) {
-      let state = JSON.parse(sessionStorage.getItem("state"));
-      // here every rendering set state geting from session storage
-      setState(state);
+    // saving session on the web-browser gives opportunity reload page manually from browser into same state
+    // for instance after login browser doesn't back to loginpage after reloading
+    if (sessionStorage.getItem('state')) {
+      let state = JSON.parse(sessionStorage.getItem('state'))
+      // here every rendering set state getting from session storage
+      setState(state)
       //first time state.isLogged==true in useEffect() case "login":
       if (state.isLogged) {
         //loads getPartList(token) after reloading the page
@@ -49,11 +52,11 @@ function App() {
         // getOrdersList(state.token);
       }
     }
-  }, []);
-  //sessionStorage is included in embedded lib, first time initiated while login
+  }, [])
+  //sessionStorage is included in embedded lib, first time initiated by "login"
   const saveToStorage = (state) => {
-    sessionStorage.setItem("state", JSON.stringify(state));
-  };
+    sessionStorage.setItem('state', JSON.stringify(state))
+  }
 
   //APP STATE FUNCTIONS
 
@@ -63,10 +66,10 @@ function App() {
       return {
         ...state,
         loading: loading,
-        error: "",
-      };
-    });
-  };
+        error: '',
+      }
+    })
+  }
 
   //update the 'state' with 'error' status (some massage)
   const setError = (error) => {
@@ -74,11 +77,11 @@ function App() {
       let tempState = {
         ...state,
         error: error,
-      };
-      saveToStorage(tempState);
-      return tempState;
-    });
-  };
+      }
+      saveToStorage(tempState)
+      return tempState
+    })
+  }
   //clearning state
   const clearState = () => {
     let state = {
@@ -86,107 +89,107 @@ function App() {
       customers: [],
       orders: [],
       isLogged: false,
-      token: "",
-      staff: "",
-      role: "",
+      token: '',
+      staff: '',
+      role: '',
       loading: false,
-      error: "",
-    };
-    saveToStorage(state);
-    setState(state);
-  };
+      error: '',
+    }
+    saveToStorage(state)
+    setState(state)
+  }
 
-  //this useEffect() will render App comp. while
-  //urlRequest.url, *.request, *.action are changed, see below [initiation cause]
-  //useEffect() call async fetch() to REST API on BackEnd-side
+  // The second useEffect() will render App comp. when
+  // [urlRequest.url, urlRequest.request, urlRequest.action] are changed, see below [initiation cause]
+  // useEffect() call async fetch() to REST API on BackEnd-side
   useEffect(() => {
     const fetchData = async () => {
       if (!urlRequest.url) {
-        return;
+        return
       }
-      setLoading(true);
-      let response = await fetch(urlRequest.url, urlRequest.request);
-      setLoading(false);
+      setLoading(true)
+      let response = await fetch(urlRequest.url, urlRequest.request)
+      setLoading(false)
       if (response.ok) {
         switch (urlRequest.action) {
-          case "getParts":
-            let data = await response.json();
+          case 'getParts':
+            let data = await response.json()
             setState((state) => {
               let tempState = {
                 ...state,
                 list: data,
-              };
+              }
               // saving the page state into sessionStorage
-              saveToStorage(tempState);
-              return tempState;
-            });
-            getOrdersList(state.token); //update customer every time when getParts
-            return;
+              saveToStorage(tempState)
+              return tempState
+            })
+            getOrdersList(state.token) //update customer every time when getParts
+            return
 
-          case "getOrdersList":
-            let orders = await response.json();
+          case 'getOrdersList':
+            let orders = await response.json()
             setState((state) => {
               let tempState = {
                 ...state,
                 orders: orders,
-              };
-              saveToStorage(tempState);
-              return tempState;
-            });
-            getCustomerList(state.token);
-            return;
+              }
+              saveToStorage(tempState)
+              return tempState
+            })
+            getCustomerList(state.token)
+            return
 
-          case "getCustomers":
-            let customers = await response.json();
+          case 'getCustomers':
+            let customers = await response.json()
             setState((state) => {
               let tempState = {
                 ...state,
                 customers: customers,
-              };
+              }
               // saving the page state into sessionStorage
-              saveToStorage(tempState);
-              return tempState;
-            });
-            return;
+              saveToStorage(tempState)
+              return tempState
+            })
+            return
 
-          case "addcustomer":
-            getCustomerList();
-            return;
+          case 'addcustomer':
+            getCustomerList()
+            return
 
-          case "editCustomer":
-            getCustomerList();
-            return;
+          case 'editCustomer':
+            getCustomerList()
+            return
 
-          case "removeCustomer":
-            getCustomerList();
-            return;
+          case 'removeCustomer':
+            getCustomerList()
+            return
 
-          case "addOrder":
-            getPartList();
-            return;
+          case 'addOrder':
+            getPartList()
+            return
 
-          case "removeOrder":
-            getOrdersList(state.token);
-            return;
+          case 'removeOrder':
+            getOrdersList(state.token)
+            return
 
-          case "updateOrder":
-            getOrdersList(state.token);
-            getPartList();
-            return;
+          case 'updateOrder':
+            getOrdersList(state.token)
+            getPartList()
+            return
 
-          case "addParts":
-            getPartList();
-            return;
+          case 'addParts':
+            getPartList()
+            return
 
-          case "register":
+          case 'register':
             //the methood 'setError()' updates STATE with argument: "Register success"
             //and initiates the very first time 'saveToStorage(s)', see above
-            setError("Register success");
-            return;
+            setError('Register success')
+            return
 
-          case "login":
+          /* case 'login':
             //the resp includes both token and staffLogin created on backEnd with login & password
-            let resp = await response.json();
+            let resp = await response.json()
             setState((state) => {
               // isLogged == true ,state.isLogged changes to true, see above
               // which opens other tempRender page, see below
@@ -196,260 +199,255 @@ function App() {
                 token: resp.token, // resp.token, because in resp. the token is under token name
                 staff: resp.staffLogin,
                 role: resp.role,
-              };
+              }
 
               // saving the page state into sessionStorage
-              saveToStorage(tempState);
-              return tempState; //just now it changes the state
-            });
-            getPartList(resp.token);
+              saveToStorage(tempState)
+              return tempState //just now it changes the state
+            })
+            getPartList(resp.token)
 
-            return;
-
-          case "logout":
-            clearState();
-            return;
+            return
+ */
+          case 'logout':
+            clearState()
+            return
           default:
-            return;
+            return
         }
       } else {
         if (response.status === 403) {
-          clearState();
-          setError("Your session has expired. Logging you out!");
-          return;
+          clearState()
+          setError('Your session has expired. Logging you out!')
+          return
         }
         //handle all different failed requests for the backend
         switch (urlRequest.action) {
-          case "register":
+          case 'register':
             if (response.status === 409) {
-              setError("Username already in use. Try another.");
+              setError('Username already in use. Try another.')
             } else {
               setError(
-                "Failed to register new user. Server responded with a status:" +
+                'Failed to register new user. Server responded with a status:' +
                   response.status
-              );
+              )
             }
-            return;
-          case "login":
+            return
+          case 'login':
             if (response.status === 400) {
-              setError("Login or password are not correct.");
+              setError('Login or password are not correct.')
             } else {
               setError(
-                "Failed to login user. Server responded with a status:" +
+                'Failed to login user. Server responded with a status:' +
                   response.status
-              );
+              )
             }
-            return;
+            return
           default:
-            return;
+            return
         }
       }
-    };
-    fetchData();
-  }, [urlRequest.url, urlRequest.request, urlRequest.action]);
+    }
+    fetchData()
+  }, [urlRequest.url, urlRequest.request, urlRequest.action])
 
   //LOGIN API  (REGISTER, LOGIN, LOGOUT)
 
-  // new user registration where user={username, password}
+  /* // new user registration where user={username, password}
   const register = (user) => {
     // change second state of 'urlRequest', that makes to trigger component updating with useEffect()
     setUrlRequest({
-      url: "/registration",
+      url: '/registration',
       request: {
-        method: "POST",
-        mode: "cors",
-        headers: { "Content-type": "application/json" },
+        method: 'POST',
+        mode: 'cors',
+        headers: { 'Content-type': 'application/json' },
         body: JSON.stringify(user),
       },
-      action: "register",
-    });
-  };
+      action: 'register',
+    })
+  } */
 
-  const login = (user) => {
+  /* const login = (user) => {
     setUrlRequest({
-      url: "/login",
+      url: '/login',
       request: {
-        method: "POST",
-        mode: "cors",
-        headers: { "Content-type": "application/json" },
+        method: 'POST',
+        mode: 'cors',
+        headers: { 'Content-type': 'application/json' },
         body: JSON.stringify(user),
       },
-      action: "login",
-    });
-  };
+      action: 'login',
+    })
+  } */
   const logout = () => {
     setUrlRequest({
-      url: "/logout",
+      url: '/logout',
       request: {
-        method: "POST",
-        mode: "cors",
-        headers: { "Counter-type": "application/json", token: state.token },
+        method: 'POST',
+        mode: 'cors',
+        headers: { 'Counter-type': 'application/json', token: state.token },
       },
-      action: "logout",
-    });
-  };
+      action: 'logout',
+    })
+  }
 
   // whether getPartList(null) or  getPartList(argument)
   const getPartList = (token) => {
-    let temptoken = state.token; // it "null " before 'login'
+    let temptoken = state.token // it "null " before 'login'
     if (token) {
-      temptoken = token;
+      temptoken = token
     }
 
     setUrlRequest({
-      url: "/parts",
+      url: '/parts',
       request: {
-        method: "GET",
-        mode: "cors",
+        method: 'GET',
+        mode: 'cors',
         //The token is inserted into headers.
-        headers: { "Content-type": "application/json", token: temptoken },
+        headers: { 'Content-type': 'application/json', token: temptoken },
       },
-      action: "getParts",
-    });
-  };
+      action: 'getParts',
+    })
+  }
   const addParts = (item) => {
     setUrlRequest({
-      url: "/parts",
+      url: '/parts',
       request: {
-        method: "POST",
-        mode: "cors",
-        headers: { "Content-type": "application/json", token: state.token },
+        method: 'POST',
+        mode: 'cors',
+        headers: { 'Content-type': 'application/json', token: state.token },
         body: JSON.stringify(item),
       },
-      action: "addParts",
-    });
-  };
+      action: 'addParts',
+    })
+  }
   const getCustomerList = (token) => {
-    let temptoken = state.token; // it "null " before 'login'
+    let temptoken = state.token // it "null " before 'login'
     if (token) {
-      temptoken = token;
+      temptoken = token
     }
     setUrlRequest({
-      url: "/customers",
+      url: '/customers',
       request: {
-        method: "GET",
-        mode: "cors",
+        method: 'GET',
+        mode: 'cors',
         //The token is inserted into headers.
-        headers: { "Content-type": "application/json", token: temptoken },
+        headers: { 'Content-type': 'application/json', token: temptoken },
       },
-      action: "getCustomers",
-    });
-  };
+      action: 'getCustomers',
+    })
+  }
 
   const removeCustomer = (customerID) => {
     setUrlRequest({
-      url: "/customers/" + customerID,
+      url: '/customers/' + customerID,
       request: {
-        method: "DELETE",
-        mode: "cors",
+        method: 'DELETE',
+        mode: 'cors',
         //The token is inserted into headers.
-        headers: { "Content-type": "application/json", token: state.token },
+        headers: { 'Content-type': 'application/json', token: state.token },
       },
-      action: "removeCustomer",
-    });
-  };
+      action: 'removeCustomer',
+    })
+  }
 
   const editCustomer = (customer) => {
     setUrlRequest({
-      url: "/customers/" + customer.customerID,
+      url: '/customers/' + customer.customerID,
       request: {
-        method: "PUT",
-        mode: "cors",
+        method: 'PUT',
+        mode: 'cors',
         //The token is inserted into headers.
-        headers: { "Content-type": "application/json", token: state.token },
+        headers: { 'Content-type': 'application/json', token: state.token },
         body: JSON.stringify(customer),
       },
-      action: "editCustomer",
-    });
-  };
+      action: 'editCustomer',
+    })
+  }
 
   const addOrder = (item) => {
     setUrlRequest({
-      url: "/orders",
+      url: '/orders',
       request: {
-        method: "POST",
-        mode: "cors",
-        headers: { "Content-type": "application/json", token: state.token },
+        method: 'POST',
+        mode: 'cors',
+        headers: { 'Content-type': 'application/json', token: state.token },
         body: JSON.stringify(item),
       },
-      action: "addOrder",
-    });
-  };
+      action: 'addOrder',
+    })
+  }
   const removeOrder = (orderID) => {
     setUrlRequest({
-      url: "/orders/" + orderID,
+      url: '/orders/' + orderID,
       request: {
-        method: "DELETE",
-        mode: "cors",
-        headers: { "Content-type": "application/json", token: state.token },
+        method: 'DELETE',
+        mode: 'cors',
+        headers: { 'Content-type': 'application/json', token: state.token },
       },
-      action: "removeOrder",
-    });
-  };
+      action: 'removeOrder',
+    })
+  }
 
   const updateOrder = (order) => {
     setUrlRequest({
-      url: "/orders",
+      url: '/orders',
       request: {
-        method: "PUT",
-        mode: "cors",
-        headers: { "Content-type": "application/json", token: state.token },
+        method: 'PUT',
+        mode: 'cors',
+        headers: { 'Content-type': 'application/json', token: state.token },
         body: JSON.stringify(order),
       },
-      action: "updateOrder",
-    });
-  };
+      action: 'updateOrder',
+    })
+  }
 
   const getOrdersList = (token) => {
-    let temptoken = state.token;
+    let temptoken = state.token
     if (token) {
-      temptoken = token;
+      temptoken = token
     }
     setUrlRequest({
-      url: "/orders",
+      url: '/orders',
       request: {
-        method: "GET",
-        mode: "cors",
-        headers: { "Content-type": "application/json", token: temptoken },
+        method: 'GET',
+        mode: 'cors',
+        headers: { 'Content-type': 'application/json', token: temptoken },
       },
-      action: "getOrdersList",
-    });
-  };
+      action: 'getOrdersList',
+    })
+  }
 
   //CONDITION RENDERING for different JSX presentation
 
   // create a 'message area' under Navbar for Informing client what being happended while different stage of requesting is
   // the message will appear every rendering when first 'type' of state error param change  for instance even "empty"..." or "Register success"
-  let messageArea = <h4></h4>;
-  if (state.loading) {
+  let messageArea = <h4></h4>
+
+  if (appState.login.loading) {
     messageArea = (
       <h5 className="alert alert-info opacity-75 scroll-top m-0">Loading...</h5>
-    );
+    )
   }
   if (state.error) {
     messageArea = (
       <h5 className="alert alert-info opacity-75 alert-dismissable m-0 ">
         {state.error}
       </h5>
-    );
+    )
   }
 
   // Create temporaly XML page, which will be present on the first page of APP
   // when isLogged: 'false' in the 'first' type of state
   let tempRender = (
     <Routes>
-      <Route
-        exact
-        path="/"
-        element={
-          <LoginPage setError={setError} register={register} login={login} />
-        }
-      />
+      <Route exact path="/" element={<LoginPage setError={setError} />} />
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
-  );
+  )
   // this part XML will be loaded when user is already logged and isLogged change to true in the 'first' type of state
-  if (state.isLogged) {
+  if (appState.login.isLogged) {
     tempRender = (
       <Routes>
         <Route
@@ -509,17 +507,17 @@ function App() {
         />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
-    );
+    )
   }
 
   return (
     <div className="container-fluid">
       <header>
         <Navbar
-          isLogged={state.isLogged}
+          isLogged={appState.login.isLogged}
           logout={logout}
-          staff={state.staff}
-          role={state.role}
+          staff={appState.login.staff}
+          role={appState.login.role}
         />
       </header>
       <div className="text-center">{messageArea}</div>
@@ -530,7 +528,7 @@ function App() {
         <FooterComponent />
       </footer>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
