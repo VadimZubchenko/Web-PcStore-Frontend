@@ -3,13 +3,16 @@ import {
   REGISTER_FAILED,
   LOGIN_SUCCESS,
   LOGIN_FAILED,
+  LOGOUT_SUCCESS,
+  LOGOUT_FAILED,
+  CLEAR_LOGIN_STATE,
   LOADING,
   STOP_LOADING,
 } from '../actions/loginActions'
 
 const getInitialState = () => {
-  if (sessionStorage.getItem('state')) {
-    let state = JSON.parse(sessionStorage.getItem('state'))
+  if (sessionStorage.getItem('loginstate')) {
+    let state = JSON.parse(sessionStorage.getItem('loginstate'))
     return state
   } else {
     return {
@@ -22,7 +25,7 @@ const getInitialState = () => {
 }
 
 const saveToStorage = (state) => {
-  sessionStorage.setItem('state', JSON.stringify(state))
+  sessionStorage.setItem('loginstate', JSON.stringify(state))
 }
 
 const initialState = getInitialState()
@@ -75,7 +78,33 @@ const loginReducers = (state = initialState, action) => {
       }
       saveToStorage(tempState)
       return tempState
-
+    case LOGOUT_SUCCESS:
+      tempState = {
+        isLogged: false,
+        token: '',
+        loading: false,
+        error: '',
+      }
+      saveToStorage(tempState)
+      return tempState
+    case LOGOUT_FAILED:
+      tempState = {
+        isLogged: false,
+        token: '',
+        loading: false,
+        error: action.error,
+      }
+      saveToStorage(tempState)
+      return tempState
+    case CLEAR_LOGIN_STATE:
+      tempState = {
+        isLogged: false,
+        token: '',
+        loading: false,
+        error: '',
+      }
+      saveToStorage(tempState)
+      return tempState
     default:
       return state
   }

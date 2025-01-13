@@ -83,7 +83,7 @@ function App() {
     })
   }
   //clearning state
-  const clearState = () => {
+  /* const clearState = () => {
     let state = {
       list: [],
       customers: [],
@@ -97,7 +97,7 @@ function App() {
     }
     saveToStorage(state)
     setState(state)
-  }
+  } */
 
   // The second useEffect() will render App comp. when
   // [urlRequest.url, urlRequest.request, urlRequest.action] are changed, see below [initiation cause]
@@ -112,7 +112,7 @@ function App() {
       setLoading(false)
       if (response.ok) {
         switch (urlRequest.action) {
-          case 'getParts':
+          /* case 'getParts':
             let data = await response.json()
             setState((state) => {
               let tempState = {
@@ -125,7 +125,7 @@ function App() {
             })
             getOrdersList(state.token) //update customer every time when getParts
             return
-
+ */
           case 'getOrdersList':
             let orders = await response.json()
             setState((state) => {
@@ -165,7 +165,7 @@ function App() {
             return
 
           case 'addOrder':
-            getPartList()
+            //getPartList()
             return
 
           case 'removeOrder':
@@ -174,11 +174,11 @@ function App() {
 
           case 'updateOrder':
             getOrdersList(state.token)
-            getPartList()
+            //getPartList()
             return
 
           case 'addParts':
-            getPartList()
+            //getPartList()
             return
 
           case 'register':
@@ -209,15 +209,15 @@ function App() {
 
             return
  */
-          case 'logout':
+          /*   case 'logout':
             clearState()
-            return
+            return */
           default:
             return
         }
       } else {
         if (response.status === 403) {
-          clearState()
+          //clearState()
           setError('Your session has expired. Logging you out!')
           return
         }
@@ -280,7 +280,7 @@ function App() {
       action: 'login',
     })
   } */
-  const logout = () => {
+  /* const logout = () => {
     setUrlRequest({
       url: '/logout',
       request: {
@@ -290,10 +290,10 @@ function App() {
       },
       action: 'logout',
     })
-  }
+  } */
 
   // whether getPartList(null) or  getPartList(argument)
-  const getPartList = (token) => {
+  /* const getPartList = (token) => {
     let temptoken = state.token // it "null " before 'login'
     if (token) {
       temptoken = token
@@ -309,7 +309,7 @@ function App() {
       },
       action: 'getParts',
     })
-  }
+  } */
   const addParts = (item) => {
     setUrlRequest({
       url: '/parts',
@@ -457,8 +457,8 @@ function App() {
             //<ListCustomerComponent parts={state.parts} errorMsg={state.error} />
             <ShopPage
               addOrder={addOrder}
-              list={state.list}
-              getPartList={getPartList}
+              list={appState.shopping.list}
+              //getPartList={getPartList}
               token={state.token}
               staff={state.staff}
               errorMsg={state.error}
@@ -514,10 +514,10 @@ function App() {
     <div className="container-fluid">
       <header>
         <Navbar
-          isLogged={appState.login.isLogged}
+        /* isLogged={appState.login.isLogged}
           logout={logout}
           staff={appState.login.staff}
-          role={appState.login.role}
+          role={appState.login.role} */
         />
       </header>
       <div className="text-center">{messageArea}</div>

@@ -1,13 +1,18 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { logout } from '../actions/loginActions'
 
 // Navbar gets App component's functions via props
 const Navbar = (props) => {
+  const state = useSelector((state) => state)
+  const dispatch = useDispatch()
+
   let links = (
     <div className="collapse navbar-collapse" id="navbarNav">
       <ul className="navbar-nav"></ul>
     </div>
-  );
-  if (props.isLogged) {
+  )
+  if (state.login.isLogged) {
     links = (
       <div className="row  m-1 p-0">
         <div className="col mt-4">
@@ -38,13 +43,17 @@ const Navbar = (props) => {
                   className="navbar-text my-2 m-1 p-0 font-monospace"
                   style={{ marginRight: 50 }}
                 >
-                  {props.role}
-                  {": "}
-                  {props.staff}
+                  {state.login.role}
+                  {': '}
+                  {state.login.staff}
                 </p>
               </li>
               <li className="nav-item" style={{ marginLeft: 20 }}>
-                <Link className="nav-link" to="/logout" onClick={props.logout}>
+                <Link
+                  className="nav-link"
+                  to="/logout"
+                  onClick={() => dispatch(logout(state.login.token))}
+                >
                   Logout
                 </Link>
               </li>
@@ -52,7 +61,7 @@ const Navbar = (props) => {
           </div>
         </div>
       </div>
-    );
+    )
   }
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -77,6 +86,6 @@ const Navbar = (props) => {
         {links}
       </div>
     </nav>
-  );
-};
-export default Navbar;
+  )
+}
+export default Navbar

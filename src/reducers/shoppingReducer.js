@@ -5,8 +5,8 @@ import {
 } from '../actions/shoppingActions'
 
 const getInitialState = () => {
-  if (sessionStorage.getItem('state')) {
-    let state = JSON.parse(sessionStorage.getItem('state'))
+  if (sessionStorage.getItem('shoppingstate')) {
+    let state = JSON.parse(sessionStorage.getItem('shoppingstate'))
     return state
   } else {
     return {
@@ -17,7 +17,7 @@ const getInitialState = () => {
 }
 
 const saveToStorage = (state) => {
-  sessionStorage.setItem('state', JSON.stringify(state))
+  sessionStorage.setItem('shoppingstate', JSON.stringify(state))
 }
 
 const initialState = getInitialState()
@@ -44,13 +44,6 @@ const shoppingReducer = (state = initialState, action) => {
     case CLEAR_SHOPPING_STATE:
       tempState = {
         list: [],
-        customers: [],
-        orders: [],
-        isLogged: false,
-        token: '',
-        staff: '',
-        role: '',
-        loading: false,
         error: '',
       }
       saveToStorage(tempState)
