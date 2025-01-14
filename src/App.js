@@ -470,7 +470,7 @@ function App() {
           path="/orders"
           element={
             <OrdersDetails
-              orders={state.orders}
+              orders={appState.shopping.orders}
               removeOrder={removeOrder}
               updateOrder={updateOrder}
               errorMsg={state.error}
@@ -499,7 +499,7 @@ function App() {
               removeCustomer={removeCustomer}
               token={state.token}
               role={state.role}
-              customers={state.customers}
+              customers={appState.shopping.customers}
               errorMsg={state.error}
               setError={setError}
             />

@@ -1,4 +1,9 @@
-import { getPartList, clearShoppingState } from './shoppingActions'
+import {
+  getPartList,
+  getOrdersList,
+  getCustomersList,
+  clearShoppingState,
+} from './shoppingActions'
 
 // Action types as constans
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS'
@@ -125,6 +130,8 @@ export const logAction = (user) => {
       }
       dispatch(loginSuccess(data))
       dispatch(getPartList(data.token))
+      dispatch(getOrdersList(data.token))
+      dispatch(getCustomersList(data.token))
     } else {
       dispatch(
         loginFailed(

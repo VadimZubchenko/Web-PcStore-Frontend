@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
-import { observer } from "mobx-react-lite";
-import { Context } from "../index";
+import React, { useContext } from 'react'
+import { observer } from 'mobx-react-lite'
+import { Context } from '../index'
 
 const PartListComponent = observer((props) => {
-  const { parts } = useContext(Context);
+  const { parts } = useContext(Context)
 
   return (
     <div>
@@ -29,10 +29,10 @@ const PartListComponent = observer((props) => {
                   <tr
                     onClick={() => parts.setSelectedPart(part)}
                     //code below while concat is true, then insert scc's "selected"
-                    className={"clickable-row ".concat(
+                    className={'clickable-row '.concat(
                       parts.selectedPart.partID === part.partID
-                        ? "text-bg-secondary"
-                        : ""
+                        ? 'text-bg-secondary'
+                        : ''
                     )}
                     key={part.partID}
                   >
@@ -50,7 +50,7 @@ const PartListComponent = observer((props) => {
         {props.errorMsg ? <div>{props.errorMsg}</div> : null}
       </div>
     </div>
-  );
-});
+  )
+})
 
-export default PartListComponent;
+export default PartListComponent
