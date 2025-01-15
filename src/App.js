@@ -37,7 +37,7 @@ function App() {
 
   // The first useEffect() runs only on the first render because an empty array ([]) as a second argument
   //without the second argument it runs on every render
-  useEffect(() => {
+  /* useEffect(() => {
     // saving session on the web-browser gives opportunity reload page manually from browser into same state
     // for instance after login browser doesn't back to loginpage after reloading
     if (sessionStorage.getItem('state')) {
@@ -52,7 +52,7 @@ function App() {
         // getOrdersList(state.token);
       }
     }
-  }, [])
+  }, []) */
   //sessionStorage is included in embedded lib, first time initiated by "login"
   const saveToStorage = (state) => {
     sessionStorage.setItem('state', JSON.stringify(state))
@@ -430,10 +430,17 @@ function App() {
       <h5 className="alert alert-info opacity-75 scroll-top m-0">Loading...</h5>
     )
   }
-  if (state.error) {
+  // if errors appear in shopping dispatches
+  let error = appState.shopping.error
+  // if errors happened in login dispatches
+  if (appState.login.error) {
+    error = appState.login.error
+  }
+  // Display error message at the top of interface
+  if (error) {
     messageArea = (
       <h5 className="alert alert-info opacity-75 alert-dismissable m-0 ">
-        {state.error}
+        {error}
       </h5>
     )
   }
@@ -457,9 +464,9 @@ function App() {
             //<ListCustomerComponent parts={state.parts} errorMsg={state.error} />
             <ShopPage
               addOrder={addOrder}
-              list={appState.shopping.list}
+              //list={appState.shopping.list}
               //getPartList={getPartList}
-              token={state.token}
+              //token={state.token}
               staff={state.staff}
               errorMsg={state.error}
               setError={setError}

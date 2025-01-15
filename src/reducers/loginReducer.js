@@ -31,6 +31,7 @@ const saveToStorage = (state) => {
 const initialState = getInitialState()
 
 const loginReducers = (state = initialState, action) => {
+  console.log('loginReducer, action:', action)
   let tempState = {}
   switch (action.type) {
     case LOADING:
@@ -67,6 +68,8 @@ const loginReducers = (state = initialState, action) => {
         token: action.data.token,
         staff: action.data.staffLogin,
         role: action.data.role,
+        loading: false,
+        error: '',
       }
       saveToStorage(tempState)
       return tempState

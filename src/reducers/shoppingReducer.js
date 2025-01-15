@@ -33,6 +33,7 @@ const shoppingReducer = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_LIST_SUCCESS:
       tempState = {
+        ...state,
         list: action.list,
         error: '',
       }

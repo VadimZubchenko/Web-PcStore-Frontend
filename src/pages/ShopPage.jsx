@@ -1,23 +1,32 @@
 //import ListCustomerComponent from "../components/CustomerListComponent";
-import OrderListComponent from "../components/OrderListCompont";
-import PartListComponent from "../components/PartListComponent";
-import AddCustomerForm from "../components/AddCustomerForm";
-import { useState } from "react";
+import OrderListComponent from '../components/OrderListCompont'
+import PartListComponent from '../components/PartListComponent'
+import AddCustomerForm from '../components/AddCustomerForm'
+import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 const ShopPage = (props) => {
+  const dispatch = useDispatch()
+  const appState = useSelector((state) => {
+    return {
+      token: state.login.token,
+      list: state.shopping.list,
+    }
+  })
+
   const [value, setState] = useState({
-    customerName: "",
-    address: "",
-    email: "",
-  });
+    customerName: '',
+    address: '',
+    email: '',
+  })
 
   const clearCustForm = () => {
     setState({
-      customerName: "",
-      address: "",
-      email: "",
-    });
-  };
+      customerName: '',
+      address: '',
+      email: '',
+    })
+  }
 
   return (
     <div className="row">
@@ -25,10 +34,10 @@ const ShopPage = (props) => {
         <div className="row">
           <div className="col mx-auto">
             <PartListComponent
-              list={props.list}
+              list={appState.list}
               setError={props.setError}
-              getPartList={props.getPartList}
-              token={props.token}
+              //getPartList={props.getPartList}
+              token={appState.token}
             />
           </div>
         </div>
@@ -48,7 +57,7 @@ const ShopPage = (props) => {
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ShopPage;
+export default ShopPage
